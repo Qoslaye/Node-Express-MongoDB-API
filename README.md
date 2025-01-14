@@ -43,7 +43,7 @@ A RESTful API built with Node.js, Express.js, and MongoDB for managing items. Th
    cd Node-Express-MongoDB-API
 
 
-   backend-api-node-express-mongodb/
+  ## Folder Structure  
 ├── models/
 │   ├── user.js
 │   ├── item.js
