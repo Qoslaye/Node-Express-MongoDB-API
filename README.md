@@ -67,17 +67,17 @@ A RESTful API built with Node.js, Express.js, and MongoDB for managing items. Th
 
 ## API Endpoints
 
-# Authentication
+### Authentication
 POST /api/auth/register – Register a new user.
 POST /api/auth/login – Authenticate a user and return a token.
 
-# User Management
+### User Management
 GET /api/users – Get all users (Admin only).
 GET /api/users/:id – Get a single user.
 PUT /api/users/:id – Update a user.
 DELETE /api/users/:id – Delete a user.
 
-# Item Management
+### Item Management
 GET /api/items – Get all items.
 GET /api/items/:id – Get a single item.
 POST /api/items – Create a new item.
