@@ -41,3 +41,25 @@ A RESTful API built with Node.js, Express.js, and MongoDB for managing items. Th
    ```bash
    git clone https://github.com/Qoslaye/Node-Express-MongoDB-API.git
    cd Node-Express-MongoDB-API
+
+
+   backend-api-node-express-mongodb/
+├── models/
+│   ├── user.js
+│   ├── item.js
+├── routes/
+│   ├── authRoutes.js
+│   ├── userRoutes.js
+│   ├── itemRoutes.js
+├── utils/
+│   ├── db.js
+│   ├── authMiddleware.js
+├── public/
+│   ├── index.html
+│   ├── view.html
+│   ├── script.js
+├── server.js
+├── .env
+├── package.json
+├── README.md
+
