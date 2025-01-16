@@ -55,25 +55,47 @@
         document.getElementById('nav-placeholder').innerHTML = data;
       });
 
+    // API base URL
+    const API_URL = 'http://192.168.100.4:5000/api';
+
+    // Handle form submission
     document.getElementById('createForm').addEventListener('submit', function(event) {
       event.preventDefault();
+
+      // Disable submit button and show loading state
+      const submitButton = this.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Creating...';
 
       const name = document.getElementById('name').value;
       const description = document.getElementById('description').value;
 
-      axios.post('http://localhost:5000/api/items', {
-        name,
-        description
+      // Log the data being sent
+      console.log('Sending data:', { name, description });
+
+      axios.post(`${API_URL}/items`, {
+        name: name,
+        description: description
       })
       .then(response => {
+        console.log('Success response:', response.data);
         showAlert('Item created successfully', 'success');
         setTimeout(() => {
-          window.location.href = `view.html?id=${response.data.data._id}`;
+          window.location.href = 'index.html';
         }, 1000);
       })
       .catch(error => {
-        console.error('Error creating item:', error);
-        showAlert('Error creating item', 'danger');
+        console.error('Error details:', error);
+        let errorMessage = 'Error creating item';
+        if (error.response) {
+          errorMessage = error.response.data.message || errorMessage;
+        }
+        showAlert(errorMessage, 'danger');
+      })
+      .finally(() => {
+        // Re-enable submit button and restore original text
+        submitButton.disabled = false;
+        submitButton.innerHTML = '<i class="bi bi-check-circle"></i> Create Item';
       });
     });
 
