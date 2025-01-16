@@ -9,7 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-  <!-- Include navbar -->
   <div id="nav-placeholder"></div>
 
   <div class="container">
@@ -42,6 +41,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // API base URL
+    const API_URL = 'http://192.168.100.4:5000/api';
+
     // Load navbar
     fetch('common/header.html')
       .then(response => response.text())
@@ -49,38 +51,51 @@
         document.getElementById('nav-placeholder').innerHTML = data;
       });
 
-    // Fetch all items from the backend API
-    axios.get('http://localhost:5000/api/items')
-      .then(response => {
-        const items = response.data.data;
-        const tableBody = document.querySelector('tbody');
-        tableBody.innerHTML = '';
-        items.forEach(item => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${escapeHtml(item.name)}</td>
-            <td>${escapeHtml(item.description)}</td>
-            <td>
-              <div class="btn-group" role="group">
-                <button class="btn btn-sm btn-info" onclick="viewItem('${item._id}')">
-                  <i class="bi bi-eye"></i>
-                </button>
-                <button class="btn btn-sm btn-warning" onclick="editItem('${item._id}')">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-danger" onclick="deleteItem('${item._id}')">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-            </td>
-          `;
-          tableBody.appendChild(row);
+    // Load items
+    function loadItems() {
+      const tableBody = document.querySelector('tbody');
+      tableBody.innerHTML = '<tr><td colspan="3" class="text-center">Loading...</td></tr>';
+
+      axios.get(`${API_URL}/items`)
+        .then(response => {
+          const items = response.data.data;
+          tableBody.innerHTML = '';
+          
+          if (items.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="3" class="text-center">No items found</td></tr>';
+            return;
+          }
+
+          items.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${escapeHtml(item.name)}</td>
+              <td>${escapeHtml(item.description)}</td>
+              <td>
+                <div class="btn-group" role="group">
+                  <button class="btn btn-sm btn-info" onclick="viewItem('${item._id}')">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-warning" onclick="editItem('${item._id}')">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteItem('${item._id}')">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Error loading items:', error);
+          tableBody.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Error loading items</td></tr>';
         });
-      })
-      .catch(error => {
-        console.error('Error fetching items:', error);
-        showAlert('Error loading items', 'danger');
-      });
+    }
+
+    // Load items when page loads
+    loadItems();
 
     function viewItem(id) {
       window.location.href = `view.html?id=${id}`;
