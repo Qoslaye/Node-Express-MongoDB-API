@@ -45,7 +45,7 @@ A RESTful API built with Node.js, Express.js, and MongoDB for managing items. Th
 
 
   ## Folder Structure  
-  
+  ```
 ├── models/
 │   ├── user.js
 │   ├── item.js
@@ -64,7 +64,7 @@ A RESTful API built with Node.js, Express.js, and MongoDB for managing items. Th
 ├── .env
 ├── package.json
 ├── README.md
-
+```
 ## API Endpoints
 
 ### Authentication
